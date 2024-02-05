@@ -1,0 +1,19 @@
+body {
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+  }
+  
+  #product-container img {
+    max-width: 30%;
+    margin: 10px;
+  }
+  
+  #view-results-btn {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }  
