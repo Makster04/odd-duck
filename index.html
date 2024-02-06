@@ -1,116 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Product Voting App</title>
+
+  <style>
+    h1 {
+      font-family: 'Courier New', Courier, monospace;
+      color: #000000
+    }
+
+    header {
+      background-color: #e8d01d;
+      padding: 20px;
+      text-align: center;
+      display: flex;
+      border: 3px solid #ffffff;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #fff;
+      background-color: #000000;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    #product-container {
+      display: flex;
+      justify-content: space-around;
+      margin: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      background-color: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    img {
+      width: 300px;
+      /* Adjust the size as needed */
+      height: 300px;
+      /* Adjust the size as needed */
+      cursor: pointer;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    img:hover {
+      transform: scale(1.1);
+    }
+
+    #view-results {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #e8d01d;
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease-in-out;
+      border: 3px solid #ffffff;
+    }
+
+    #view-results:hover {
+      background-color: #000000;
+    }
+
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #333;
+    }
+
+    li {
+      float: left;
+    }
+
+    li a {
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+
+    li a:hover:not(.active) {
+      background-color: #111;
+    }
+
+    .active {
+      background-color: #333;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Odd Duck Products (Voting App)</h1>
+  </header>
+
   <ul>
     <li><a href="#DuckCave">Odd Duck Cave</a></li>
     <li><a href="#DuckProducts"> Odd Duck Products</a></li>
     <li><a href="#Requirtment">Ducks</a></li>
     <li style="float:right"><a class="active" href="#about">About</a></li>
   </ul>
-  <header>
-    <h1>Odd Duck Products (Voting App)</h1>
-  </header>
-  <style>
 
-h1 {
-   font-family: 'Courier New', Courier, monospace;
-   color:#000000
-}
-
-header {
-   background-color: #e8d01d;
-   padding: 20px;
-   text-align: center;
-   display: flex;
-   border: 3px solid #ffffff;
-}
-
-body {
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #fff;
-    background-color: #000000;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-}
-  
-#product-container {
-    display: flex;
-    justify-content: space-around;
-    margin: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    border-radius: 8px;
-    overflow: hidden;
-}
-  
-img {
-    width: 300px; /* Adjust the size as needed */
-    height: 300px; /* Adjust the size as needed */
-    cursor: pointer;
-    transition: transform 0.3s ease-in-out;
-}
-  
-img:hover {
-    transform: scale(1.1);
-}
-  
-#view-results {
-    margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #e8d01d;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out;
-    border: 3px solid #ffffff;
-}
-  
-#view-results:hover {
-    background-color: #000000;
-}  
-
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #333;
-}
-
-li {
-  float: left;
-}
-
-li a {
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
-
-li a:hover:not(.active) {
-  background-color: #111;
-}
-
-.active {
-  background-color: #333;
-}
-
-  </style>
-</head>
-<body>
-  
   <div id="product-container"></div>
   <div id="results-container"></div>
   <button id="view-results">View Duck Results</button>
@@ -119,4 +124,3 @@ li a:hover:not(.active) {
 </body>
 
 </html>
-
