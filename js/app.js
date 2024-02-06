@@ -1,96 +1,117 @@
-// Constructor function for products
+// app.js
+
+// Constructor function for Product
 function Product(name, imagePath) {
     this.name = name;
     this.imagePath = imagePath;
     this.timesShown = 0;
     this.timesClicked = 0;
+    Product.allProducts.push(this);
   }
   
-  // Array to store all products
-  const allProducts = [];
+  // Static property to keep track of all products
+  Product.allProducts = [];
   
-  // Function to display three unique products
-  function displayProducts() {
-    const productDisplay = document.getElementById('product-display');
-    const products = getRandomProducts();
-  
-    products.forEach((product, index) => {
-      const imgElement = document.getElementById(`product${index + 1}`);
-      imgElement.src = product.imagePath;
-      imgElement.alt = product.name;
-      product.timesShown++;
-    });
-  }
-  
-  // Function to get three random products
-  function getRandomProducts() {
-    const randomProducts = [];
-    while (randomProducts.length < 3) {
-      const randomIndex = Math.floor(Math.random() * allProducts.length);
-      const randomProduct = allProducts[randomIndex];
-      if (!randomProducts.includes(randomProduct)) {
-        randomProducts.push(randomProduct);
+  // Function to generate three unique random products
+  function generateRandomProducts() {
+    const uniqueProducts = [];
+    while (uniqueProducts.length < 3) {
+      const randomIndex = Math.floor(Math.random() * Product.allProducts.length);
+      const randomProduct = Product.allProducts[randomIndex];
+      if (!uniqueProducts.includes(randomProduct)) {
+        uniqueProducts.push(randomProduct);
       }
     }
-    return randomProducts;
+    return uniqueProducts;
   }
   
-  // Function to handle product click
-  function handleProductClick(productIndex) {
-    const selectedProduct = allProducts[productIndex];
-    selectedProduct.timesClicked++;
-    displayProducts();
+  // Function to update product stats after user click
+  function updateProductStats(product) {
+    product.timesShown++;
+    product.timesClicked++;
   }
   
-  // Function to end the voting session and display results
-  function endVotingSession() {
-    const productDisplay = document.getElementById('product-display');
-    const viewResultsBtn = document.getElementById('viewResultsBtn');
+  // Function to handle the user's product selection
+  function handleProductSelection(selectedProduct) {
+    updateProductStats(selectedProduct);
   
-    productDisplay.innerHTML = '<p>Voting session has ended. Click "View Results" to see the results.</p>';
-    viewResultsBtn.style.display = 'block';
+    const productContainer = document.getElementById('product-container');
+    productContainer.innerHTML = '';
   
-    // Remove event listeners
-    for (let i = 1; i <= 3; i++) {
-      const imgElement = document.getElementById(`product${i}`);
-      imgElement.removeEventListener('click', () => handleProductClick(i - 1));
+    const newProducts = generateRandomProducts();
+    newProducts.forEach(product => {
+      const imgElement = document.createElement('img');
+      imgElement.src = product.imagePath;
+      imgElement.alt = product.name;
+      imgElement.addEventListener('click', () => handleProductSelection(product));
+      productContainer.appendChild(imgElement);
+    });
+  
+    currentRound++;
+  
+    if (currentRound > totalRounds) {
+      document.getElementById('view-results').style.display = 'block';
     }
   }
   
-  // Function to display results
-  function displayResults() {
-    const results = document.getElementById('product-display');
-    results.innerHTML = '<h2>Results:</h2>';
+  // Number of rounds and current round
+  const totalRounds = 25;
+  let currentRound = 1;
   
-    allProducts.forEach(product => {
-      results.innerHTML += `<p>${product.name} had ${product.timesClicked} votes, and was seen ${product.timesShown} times.</p>`;
-    });
-  }
+// Event listener for the "View Results" button
+document.getElementById('view-results').addEventListener('click', displayResults);
+
+// Function to display voting results
+function displayResults() {
+  const resultsContainer = document.getElementById('results-container');
+  resultsContainer.innerHTML = ''; // Clear previous results
+
+  const results = Product.allProducts.map(product => {
+    return `- ${product.name} = ${product.timesClicked} Votes (Seen ${product.timesShown}x).`;
+  });
+
+  results.forEach(result => {
+    const resultElement = document.createElement('p');
+    resultElement.textContent = result;
+    resultsContainer.appendChild(resultElement);
+  });
+
+  // Optionally, you can also hide the product container if you want
+  document.getElementById('product-container').style.display = 'none';
+  document.getElementById('view-results').style.display = 'none';
+  resultsContainer.style.display = 'block';
+}
   
-  // Initialize products
-  const product1 = new Product('dog-duck', 'images/dog-duck.jpg');
-  const product2 = new Product('cat-fish', 'images/cat-fish.jpg');
-  const product3 = new Product('bird-banana', 'images/bird-banana.jpg');
+  // Example products
+  new Product('Bat Bag', 'images/bag.jpg');
+  new Product('Bat Banana', 'images/banana.jpg');
+  new Product('Bat Bathroom', 'images/bathroom.jpg');
+  new Product('Bat Dog-Duck', 'images/dog-duck.jpg');
+  new Product('Bat Boots', 'images/boots.jpg');
+  new Product('Bat Breakfast', 'images/breakfast.jpg');
+  new Product('Bat Bubblegum', 'images/bubblegum.jpg');
+  new Product('Bat Chair', 'images/chair.jpg');
+  new Product('Bat Cthulhu', 'images/cthulhu.jpg');
+  new Product('Bat Dog-Duck', 'images/dog-duck.jpg');
+  new Product('Bat Dragon', 'images/dragon.jpg');
+  new Product('Bat Pen', 'images/pen.jpg');
+  new Product('Bat Pet-Sweep', 'images/pet-sweep.jpg');
+  new Product('Bat Scissors', 'images/scissors.jpg')
+  new Product('Bat Shark', 'images/shark.jpg');
+  new Product('Bat Sweep', 'images/sweep.png');
+  new Product('Bat Tauntaun', 'images/tauntaun.jpg');
+  new Product('Bat Unicorn', 'images/unicorn.jpg');
+  new Product('Bat Water-Can', 'images/water-can.jpg');
+  new Product('Bat Wine-Glass', 'images/wine-glass.jpg');
+
   
-  // Add products to the array
-  allProducts.push(product1, product2, product3);
-  
-  // Initialize voting rounds
-  let votingRounds = 25;
-  
-  // Display initial products
-  displayProducts();
-  
-  // Add event listeners
-  for (let i = 1; i <= 3; i++) {
-    const imgElement = document.getElementById(`product${i}`);
-    imgElement.addEventListener('click', () => handleProductClick(i - 1));
-  }
-  
-  // Add event listener for View Results button
-  const viewResultsBtn = document.getElementById('viewResultsBtn');
-  viewResultsBtn.addEventListener('click', () => {
-    endVotingSession();
-    displayResults();
+  // Initial display of three random products
+  const initialProducts = generateRandomProducts();
+  initialProducts.forEach(product => {
+    const imgElement = document.createElement('img');
+    imgElement.src = product.imagePath;
+    imgElement.alt = product.name;
+    imgElement.addEventListener('click', () => handleProductSelection(product));
+    document.getElementById('product-container').appendChild(imgElement);
   });
   
