@@ -93,9 +93,10 @@ function displayResults() {
   const resultsContainer = document.getElementById('results-container');
   resultsContainer.innerHTML = '';
 
-  // Extract product names and votes from Product.allProducts array
+  // Extract product names, votes, shhwon from Product.allProducts array
   const productNames = Product.allProducts.map(product => product.name);
   const votes = Product.allProducts.map(product => product.timesClicked);
+  const views = Product.allProducts.map(product => product.timesShown)
 
   // Create canvas element for the chart
   const ctx = document.createElement('canvas');
@@ -113,7 +114,15 @@ function displayResults() {
         backgroundColor: 'rgba(54, 162, 235, 0.5)',
         borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 1
+      },
+      {
+        label: 'Viewed',
+        data: views,
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        borderWidth: 1
       }]
+
     },
     options: {
       scales: {
