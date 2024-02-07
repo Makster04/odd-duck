@@ -6,11 +6,12 @@ function Product(name, imagePath) {
   this.imagePath = imagePath;
   this.timesShown = 0;
   this.timesClicked = 0;
-  Product.allProducts.push(this);
+  Product.allProducts.push(this); // push our "product" into the allProducts array, everytime we run the construction.
 }
 
 // Array to store all instances of Product objects
 Product.allProducts = [];
+Product.currentProducts = [];
 
 // PRODUCTS - Creating instances of Product
 // Multiple instances of the Product object are created with different names and image paths.
@@ -18,7 +19,7 @@ Product.allProducts = [];
 // Instances are created using the Product constructor function.
 new Product('Duck Bag', 'images/bag.jpg');
 new Product('Duck Banana', 'images/banana.jpg');
-new Product('Duck Bathroom', 'image/bathroom.jpg'); 
+new Product('Duck Bathroom', 'images/bathroom.jpg'); 
 new Product('Duck Boots', 'images/boots.jpg');
 new Product('Duck Breakfast', 'images/breakfast.jpg');
 new Product('Duck Bubblegum', 'images/bubblegum.jpg');
@@ -40,13 +41,15 @@ new Product('Duck Wine Glass', 'images/wine-glass.jpg');
 // It ensures that no duplicate products are selected.
 function generateRandomProducts() {
   const uniqueProducts = [];
+  console.log('HERE ARE THE PREVIOUS PRODUCTS', Product.currentProducts);
   while (uniqueProducts.length < 3) {
     const randomIndex = Math.floor(Math.random() * Product.allProducts.length);
-    const randomProduct = Product.allProducts[randomIndex];
-    if (!uniqueProducts.includes(randomProduct)) {
+    const randomProduct = Product.allProducts[randomIndex]; 
+    if (!uniqueProducts.includes(randomProduct) && !Product.currentProducts.includes(randomProduct)) {
       uniqueProducts.push(randomProduct);
     }
   }
+  Product.currentProducts = uniqueProducts;
   return uniqueProducts;
 }
 
