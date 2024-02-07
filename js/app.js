@@ -18,7 +18,7 @@ Product.allProducts = [];
 // Instances are created using the Product constructor function.
 new Product('Duck Bag', 'images/bag.jpg');
 new Product('Duck Banana', 'images/banana.jpg');
-new Product('Duck Bathroom', 'image/bathroom.jpg'); // Typo in the image path, should be 'images/bathroom.jpg'
+new Product('Duck Bathroom', 'image/bathroom.jpg'); 
 new Product('Duck Boots', 'images/boots.jpg');
 new Product('Duck Breakfast', 'images/breakfast.jpg');
 new Product('Duck Bubblegum', 'images/bubblegum.jpg');
