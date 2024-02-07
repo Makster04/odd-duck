@@ -1,23 +1,24 @@
 // CONSTRUCTOR FUNCTION for Product
-// This function creates instances of the Product object with properties such as name, imagePath, timesShown, and timesClicked.
-// Each product instance is pushed into the Product.allProducts array.
+// This function creates instances of the Product object with provided name and image path,
+// initializing their timesShown and timesClicked properties to 0, and pushes them into Product.allProducts array.
 function Product(name, imagePath) {
-  this.name = name; // String: Represents the name of the product.
-  this.imagePath = imagePath; // String: Represents the file path to the product image.
-  this.timesShown = 0; // Number: Represents the number of times the product has been shown to the user.
-  this.timesClicked = 0; // Number: Represents the number of times the product has been clicked by the user.
+  this.name = name;
+  this.imagePath = imagePath;
+  this.timesShown = 0;
+  this.timesClicked = 0;
   Product.allProducts.push(this);
 }
 
-// STATISTIC PROPERTY to keep track of all products
-Product.allProducts = []; // Array: Contains all instances of the Product object.
+// Array to store all instances of Product objects
+Product.allProducts = [];
 
 // PRODUCTS - Creating instances of Product
 // Multiple instances of the Product object are created with different names and image paths.
 // There seems to be a duplicate entry with the name 'Duck Dog-Duck', which might need attention.
+// Instances are created using the Product constructor function.
 new Product('Duck Bag', 'images/bag.jpg');
 new Product('Duck Banana', 'images/banana.jpg');
-new Product('Duck Bathroom', 'image/bathroom.jpg');
+new Product('Duck Bathroom', 'image/bathroom.jpg'); // Typo in the image path, should be 'images/bathroom.jpg'
 new Product('Duck Boots', 'images/boots.jpg');
 new Product('Duck Breakfast', 'images/breakfast.jpg');
 new Product('Duck Bubblegum', 'images/bubblegum.jpg');
@@ -38,10 +39,10 @@ new Product('Duck Wine Glass', 'images/wine-glass.jpg');
 // This function selects three unique products randomly from the Product.allProducts array.
 // It ensures that no duplicate products are selected.
 function generateRandomProducts() {
-  const uniqueProducts = []; // Array: Holds the selected unique products.
+  const uniqueProducts = [];
   while (uniqueProducts.length < 3) {
     const randomIndex = Math.floor(Math.random() * Product.allProducts.length);
-    const randomProduct = Product.allProducts[randomIndex]; // Object: A randomly selected product.
+    const randomProduct = Product.allProducts[randomIndex];
     if (!uniqueProducts.includes(randomProduct)) {
       uniqueProducts.push(randomProduct);
     }
@@ -49,79 +50,99 @@ function generateRandomProducts() {
   return uniqueProducts;
 }
 
-// FUNCTION TO UPDATE PRODUCT stats after user click
-// This function increments the timesShown and timesClicked properties of the selected product.
+// Function to update the timesShown and timesClicked properties of a product
 function updateProductStats(product) {
-  product.timesShown++; // Incrementing the timesShown property of the product by 1.
-  product.timesClicked++; // Incrementing the timesClicked property of the product by 1.
+  product.timesShown++;
+  product.timesClicked++;
 }
 
-// FUNCTION TO HANDLE the user's product selection
-// This function updates product stats, generates new random products, updates the UI with these products,
-// and increments the current round counter. It also checks if all rounds are completed and displays the results if so.
+// Function to handle the selection of a product
 function handleProductSelection(selectedProduct) {
+  // Update product statistics
   updateProductStats(selectedProduct);
 
+  // Clear product container
   const productContainer = document.getElementById('product-container');
-  productContainer.innerHTML = ''; // Clearing the product container.
+  productContainer.innerHTML = '';
 
-  const newProducts = generateRandomProducts(); // Array: Holds three new random products.
+  // Generate new set of random products
+  const newProducts = generateRandomProducts();
+  // Display new products
   newProducts.forEach(product => {
-    const imgElement = document.createElement('img'); // DOM Element: Image element to display the product.
-    imgElement.src = product.imagePath; // String: URL of the product image.
-    imgElement.alt = product.name; // String: Alternate text for the product image.
-    imgElement.addEventListener('click', () => handleProductSelection(product)); // Event Listener: Click event to handle product selection.
-    productContainer.appendChild(imgElement); // Adding the image element to the product container.
+    const imgElement = document.createElement('img');
+    imgElement.src = product.imagePath;
+    imgElement.alt = product.name;
+    imgElement.addEventListener('click', () => handleProductSelection(product));
+    productContainer.appendChild(imgElement);
   });
 
-  currentRound++; // Incrementing the current round counter by 1.
+  // Increment current round
+  currentRound++;
 
+  // Show results if all rounds completed
   if (currentRound > totalRounds) {
-    document.getElementById('view-results').style.display = 'block'; // Displaying the "View Results" button.
+    document.getElementById('view-results').style.display = 'block';
   }
 }
 
-// EVENT LISTENER for the "View Results" button
-// This listens for a click event on the "View Results" button and triggers the displayResults function.
+// Event listener for displaying results
 document.getElementById('view-results').addEventListener('click', displayResults);
 
-// FUNCTIONS TO DISPLAY voting results
-// This function populates the results container with each product's name, number of votes,
-// and the number of times it was shown.
+// Function to display the results in a chart
 function displayResults() {
   const resultsContainer = document.getElementById('results-container');
-  resultsContainer.innerHTML = ''; // Clear previous results
+  resultsContainer.innerHTML = '';
 
-  const results = Product.allProducts.map(product => {
-    return `- ${product.name} = ${product.timesClicked} Votes (Seen ${product.timesShown}x).`; // String: Represents the result of each product.
+  // Extract product names and votes from Product.allProducts array
+  const productNames = Product.allProducts.map(product => product.name);
+  const votes = Product.allProducts.map(product => product.timesClicked);
+
+  // Create canvas element for the chart
+  const ctx = document.createElement('canvas');
+  ctx.id = 'results-chart'; // Add an ID to the canvas for later reference
+  resultsContainer.appendChild(ctx);
+
+  // Create a chart using Chart.js library
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: productNames,
+      datasets: [{
+        label: 'Votes',
+        data: votes,
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
+      }
+    ]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
   });
 
-  results.forEach(result => {
-    const resultElement = document.createElement('p'); // DOM Element: Paragraph element to display the result.
-    resultElement.textContent = result; // Setting the text content of the result element.
-    resultsContainer.appendChild(resultElement); // Adding the result element to the results container.
-  });
-
-  // OPTION TO HIDE PRODUCT CONTAINER
-  document.getElementById('product-container').style.display = 'none'; // Hiding the product container.
-  document.getElementById('view-results').style.display = 'none'; // Hiding the "View Results" button.
-  resultsContainer.style.display = 'block'; // Displaying the results container.
+  // Hide product container and display results container
+  document.getElementById('product-container').style.display = 'none';
+  document.getElementById('view-results').style.display = 'none';
+  resultsContainer.style.display = 'block';
 }
 
-// Number of rounds and current round
-// totalRounds is a constant representing the total number of rounds.
-// currentRound is a variable representing the current round number.
-const totalRounds = 25; // Number: Represents the total number of rounds in the voting session.
-let currentRound = 1; // Number: Represents the current round number.
+// Total rounds for the voting
+const totalRounds = 25;
+// Current round counter
+let currentRound = 1;
 
-// INITIAL DISPLAY of three random products
-// This code block initializes the UI by displaying three random products at the beginning of the session
-// and sets up click event listeners for each product image.
-const initialProducts = generateRandomProducts(); // Array: Holds three initial random products.
+// Initial products for the first round
+const initialProducts = generateRandomProducts();
+// Display initial products
 initialProducts.forEach(product => {
-  const imgElement = document.createElement('img'); // DOM Element: Image element to display the product.
-  imgElement.src = product.imagePath; // String: URL of the product image.
-  imgElement.alt = product.name; // String: Alternate text for the product image.
-  imgElement.addEventListener('click', () => handleProductSelection(product)); // Event Listener: Click event to handle product selection.
-  document.getElementById('product-container').appendChild(imgElement); // Adding the image element to the product container.
+  const imgElement = document.createElement('img');
+  imgElement.src = product.imagePath;
+  imgElement.alt = product.name;
+  imgElement.addEventListener('click', () => handleProductSelection(product));
+  document.getElementById('product-container').appendChild(imgElement);
 });
