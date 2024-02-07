@@ -17,7 +17,22 @@ Product.allProducts = []; // Array: Contains all instances of the Product object
 // There seems to be a duplicate entry with the name 'Duck Dog-Duck', which might need attention.
 new Product('Duck Bag', 'images/bag.jpg');
 new Product('Duck Banana', 'images/banana.jpg');
-// Other product instances created...
+new Product('Duck Bathroom', 'image/bathroom.jpg');
+new Product('Duck Boots', 'images/boots.jpg');
+new Product('Duck Breakfast', 'images/breakfast.jpg');
+new Product('Duck Bubblegum', 'images/bubblegum.jpg');
+new Product('Duck Chair', 'images/chair.jpg');
+new Product('Duck Cthulhu', 'images/cthulhu.jpg');
+new Product('Duck Dragon', 'images/dragon.jpg');
+new Product('Duck Pen', 'images/pen.jpg');
+new Product('Duck Pet Sweep', 'images/pet-sweep.jpg');
+new Product('Duck Scissors', 'images/scissors.jpg');
+new Product('Duck Shark', 'images/shark.jpg');
+new Product('Duck Sweep', 'images/sweep.png');
+new Product('Duck Tauntaun', 'images/tauntaun.jpg');
+new Product('Duck Unicorn', 'images/unicorn.jpg');
+new Product('Duck Water Can', 'images/water-can.jpg');
+new Product('Duck Wine Glass', 'images/wine-glass.jpg');
 
 // FUNCTION TO GENERATE three unique random products
 // This function selects three unique products randomly from the Product.allProducts array.
