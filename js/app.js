@@ -25,10 +25,12 @@ if (dataFromStorage) {
     image1.setAttribute('src', product1.url);
     image2.setAttribute('src', product2.url);
     image3.setAttribute('src', product3.url);
-    product1.timesShown++;
-    product1.setAttribute('alt', product1.name);
+  
+    image1.setAttribute('alt', product1.name);
     image2.setAttribute('alt', product2.name);
     image3.setAttribute('alt', product3.name);
+
+    product1.timesShown++;
     product2.timesShown++;
     product3.timesShown++;
 
@@ -131,12 +133,14 @@ function renderNewProducts() {
   image1.setAttribute('src', randomProduct1.url);
   image2.setAttribute('src', randomProduct2.url);
   image3.setAttribute('src', randomProduct3.url);
-  randomProduct1.timesShown++;
+  
   image1.setAttribute('alt', randomProduct1.name);
   image2.setAttribute('alt', randomProduct2.name);
   image3.setAttribute('alt', randomProduct3.name);
+  
   randomProduct2.timesShown++;
   randomProduct3.timesShown++;
+  randomProduct1.timesShown++;
 }
 
 // get an array of all timesShown from the products array.
