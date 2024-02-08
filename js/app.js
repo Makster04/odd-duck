@@ -1,159 +1,152 @@
-// CONSTRUCTOR FUNCTION for Product
-// This function creates instances of the Product object with provided name and image path,
-// initializing their timesShown and timesClicked properties to 0, and pushes them into Product.allProducts array.
-function Product(name, imagePath) {
-  this.name = name;
-  this.imagePath = imagePath;
-  this.timesShown = 0;
-  this.timesClicked = 0;
-  Product.allProducts.push(this); // push our "product" into the allProducts array, everytime we run the construction.
+'use strict';
+
+console.log('I am loaded!!');
+
+const ctx = document.getElementById('myChart');
+
+let products = [];
+let image1 = document.getElementById('image1');
+let image2 = document.getElementById('image2');
+let image3 = document.getElementById('image3');
+
+function Product(url, name) {
+    this.url = url;
+    this.name = name;
+    this.clicks = 0;
+    this.timesShown = 0;
 }
 
-// Array to store all instances of Product objects
-Product.allProducts = [];
-Product.currentProducts = [];
+let product1 = new Product('images/bag.jpg', 'Duck Bag');
+let product2 = new Product('images/banana.jpg', 'Duck Banana');
+let product3 = new Product('images/bathroom.jpg', 'Duck Bathroom'); 
+let product4 = new Product('images/boots.jpg', 'Duck Boots');
+let product5 = new Product('images/breakfast.jpg', 'Duck Breakfast');
+let product6 = new Product('images/bubblegum.jpg', 'Duck Bubblegum');
+let product7 = new Product('images/chair.jpg', 'Duck Chair');
+let product8 = new Product('images/cthulhu.jpg', 'Duck Cthulhu');
+let product9 = new Product('images/dragon.jpg', 'Duck Dragon');
+let product10 = new Product('images/pen.jpg', 'Duck Pen');
+let product11 = new Product('images/pet-sweep.jpg', 'Duck Pet Sweep');
+let product12 = new Product('images/scissors.jpg', 'Duck Scissors');
+let product13 = new Product('images/shark.jpg', 'Duck Shark');
+let product14 = new Product('images/sweep.png', 'Duck Sweep');
+let product15 = new Product('images/tauntaun.jpg', 'Duck Tauntaun');
+let product16 = new Product('images/unicorn.jpg', 'Duck Unicorn');
+let product17 = new Product('images/water-can.jpg', 'Duck Water Can');
+let product18 = new Product('images/wine-glass.jpg', 'Duck Wine Glass');
 
-// PRODUCTS - Creating instances of Product
-// Multiple instances of the Product object are created with different names and image paths.
-// There seems to be a duplicate entry with the name 'Duck Dog-Duck', which might need attention.
-// Instances are created using the Product constructor function.
-new Product('Duck Bag', 'images/bag.jpg');
-new Product('Duck Banana', 'images/banana.jpg');
-new Product('Duck Bathroom', 'images/bathroom.jpg'); 
-new Product('Duck Boots', 'images/boots.jpg');
-new Product('Duck Breakfast', 'images/breakfast.jpg');
-new Product('Duck Bubblegum', 'images/bubblegum.jpg');
-new Product('Duck Chair', 'images/chair.jpg');
-new Product('Duck Cthulhu', 'images/cthulhu.jpg');
-new Product('Duck Dragon', 'images/dragon.jpg');
-new Product('Duck Pen', 'images/pen.jpg');
-new Product('Duck Pet Sweep', 'images/pet-sweep.jpg');
-new Product('Duck Scissors', 'images/scissors.jpg');
-new Product('Duck Shark', 'images/shark.jpg');
-new Product('Duck Sweep', 'images/sweep.png');
-new Product('Duck Tauntaun', 'images/tauntaun.jpg');
-new Product('Duck Unicorn', 'images/unicorn.jpg');
-new Product('Duck Water Can', 'images/water-can.jpg');
-new Product('Duck Wine Glass', 'images/wine-glass.jpg');
+products.push(product1, product2, product3, product4, product5, product6, product7, product8, product9, product10, product11, product12, product13, product14, product15, product16, product17, product18);
 
-// FUNCTION TO GENERATE three unique random products
-// This function selects three unique products randomly from the Product.allProducts array.
-// It ensures that no duplicate products are selected.
-function generateRandomProducts() {
-  const uniqueProducts = [];
-  console.log('HERE ARE THE PREVIOUS PRODUCTS', Product.currentProducts);
-  while (uniqueProducts.length < 3) {
-    const randomIndex = Math.floor(Math.random() * Product.allProducts.length);
-    const randomProduct = Product.allProducts[randomIndex]; 
-    if (!uniqueProducts.includes(randomProduct) && !Product.currentProducts.includes(randomProduct)) {
-      uniqueProducts.push(randomProduct);
+renderNewProducts();
+
+function renderNewProducts() {
+    let indices = getRandomIndices(3);
+
+    for (let i = 0; i < indices.length; i++) {
+        let randomProduct = products[indices[i]]; // corrected typo here
+        let imageElement = getImageElement(i + 1);
+        imageElement.setAttribute('src', randomProduct.url);
+        imageElement.setAttribute('alt', randomProduct.name);
+        randomProduct.timesShown++;
     }
-  }
-  Product.currentProducts = uniqueProducts;
-  return uniqueProducts;
 }
 
-// Function to update the timesShown and timesClicked properties of a product
-function updateProductStats(product) {
-  product.timesShown++;
-  product.timesClicked++;
-}
-
-// Function to handle the selection of a product
-function handleProductSelection(selectedProduct) {
-  // Update product statistics
-  updateProductStats(selectedProduct);
-
-  // Clear product container
-  const productContainer = document.getElementById('product-container');
-  productContainer.innerHTML = '';
-
-  // Generate new set of random products
-  const newProducts = generateRandomProducts();
-  // Display new products
-  newProducts.forEach(product => {
-    const imgElement = document.createElement('img');
-    imgElement.src = product.imagePath;
-    imgElement.alt = product.name;
-    imgElement.addEventListener('click', () => handleProductSelection(product));
-    productContainer.appendChild(imgElement);
-  });
-
-  // Increment current round
-  currentRound++;
-
-  // Show results if all rounds completed
-  if (currentRound > totalRounds) {
-    document.getElementById('view-results').style.display = 'block';
-  }
-}
-
-// Event listener for displaying results
-document.getElementById('view-results').addEventListener('click', displayResults);
-
-// Function to display the results in a chart
-function displayResults() {
-  const resultsContainer = document.getElementById('results-container');
-  resultsContainer.innerHTML = '';
-
-  // Extract product names, votes, shhwon from Product.allProducts array
-  const productNames = Product.allProducts.map(product => product.name);
-  const votes = Product.allProducts.map(product => product.timesClicked);
-  const views = Product.allProducts.map(product => product.timesShown)
-
-  // Create canvas element for the chart
-  const ctx = document.createElement('canvas');
-  ctx.id = 'results-chart'; // Add an ID to the canvas for later reference
-  resultsContainer.appendChild(ctx);
-
-  // Create a chart using Chart.js library
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: productNames,
-      datasets: [{
-        label: 'Votes',
-        data: votes,
-        backgroundColor: 'rgba(54, 162, 235, 0.5)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 1
-      },
-      {
-        label: 'Viewed',
-        data: views,
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-        borderColor: 'rgba(255, 99, 132, 1)',
-        borderWidth: 1
-      }]
-
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
+function getRandomIndices(count) {
+    let indices = [];
+    while (indices.length < count) {
+        let index = Math.floor(Math.random() * products.length);
+        if (!indices.includes(index)) {
+            indices.push(index);
         }
-      }
     }
-  });
-
-  // Hide product container and display results container
-  document.getElementById('product-container').style.display = 'none';
-  document.getElementById('view-results').style.display = 'none';
-  resultsContainer.style.display = 'block';
+    return indices;
 }
 
-// Total rounds for the voting
-const totalRounds = 25;
-// Current round counter
-let currentRound = 1;
+function getImageElement(index) {
+    switch (index) {
+        case 1:
+            return image1;
+        case 2:
+            return image2;
+        case 3:
+            return image3;
+        default:
+            return null;
+    }
+}
 
-// Initial products for the first round
-const initialProducts = generateRandomProducts();
-// Display initial products
-initialProducts.forEach(product => {
-  const imgElement = document.createElement('img');
-  imgElement.src = product.imagePath;
-  imgElement.alt = product.name;
-  imgElement.addEventListener('click', () => handleProductSelection(product));
-  document.getElementById('product-container').appendChild(imgElement);
+let productImages = document.querySelectorAll('.product-image');
+
+productImages.forEach(image => {
+    image.addEventListener('click', function(event) {
+        event.preventDefault();
+        console.log(event.target.alt);
+        findProduct(event.target.alt);
+        renderNewProducts();
+        console.log(getNames());
+        console.log(getClicks());
+        console.log(getViews());
+    });
 });
+
+function findProduct(alt) {
+    for (let i = 0; i < products.length; i++) {
+        if (products[i].name === alt) {
+            products[i].clicks++;
+        }
+    }
+    console.log(products);
+}
+
+function getNames() {
+    let names = [];
+    for (let i = 0; i < products.length; i++) {
+        names.push(products[i].name)
+    }
+    return names;
+}
+
+function getClicks() {
+    let clicks = [];
+    for (let i = 0; i < products.length; i++) {
+        clicks.push(products[i].clicks);
+    }
+    return clicks;
+}
+
+function getViews() {
+    let views = [];
+    for (let i = 0; i < products.length; i++) {
+        views.push(products[i].timesShown);
+    }
+    return views;
+}
+
+let button = document.getElementById('result-button');
+button.addEventListener('click', viewChart);
+
+function viewChart() {
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: getNames(),
+            datasets: [{
+                label: '# of Clicks',
+                data: getClicks(),
+                borderWidth: 1
+            }, {
+                label: '# of Views',
+                data: getViews(),
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
