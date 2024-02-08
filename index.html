@@ -61,6 +61,23 @@ img:hover {
   background-color: #000000;
 }
 
+#start-over {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  border: 3px solid #e8d01d;
+}
+
+#start-over:hover {
+  background-color: #e8d01d;
+}
+
 ul {
   list-style-type: none;
   margin: 0;
@@ -113,8 +130,10 @@ li a:hover:not(.active) {
       <img id="image3" class="product-image" alt="">
   </div>  
   <button id="result-button">View Results</button>
+  <button id="start-over">Clear Data</button>
     <canvas id="myChart" height="100px" width="100px"></canvas>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
+
