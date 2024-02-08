@@ -174,16 +174,16 @@ let button = document.getElementById('result-button');
 button.addEventListener('click', viewChart);
 
 function saveData(data) {
-    localStorage.setItem('productData', JSON.stringify(data));
-  }
-  
-  function fetchData() {
-    return JSON.parse(localStorage.getItem('productData'));
-  }
-  
-  function clearData() {
-    localStorage.clear();
-  }
+  localStorage.setItem('productData', JSON.stringify(data));
+}
+
+function fetchData() {
+  return JSON.parse(localStorage.getItem('productData'));
+}
+
+function clearData() {
+  localStorage.clear();
+}
 
 function viewChart() {
   new Chart(ctx, {
